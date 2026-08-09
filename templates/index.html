@@ -4,6 +4,39 @@
 
 {% block body %}
 <main class="show-sign-page" id="inicio" aria-label="Letreiro do Show da Morgana">
+  <audio
+    id="musica-festa"
+    src="{{ url_for('static', filename='audio/eu-quero-saber.mp3') }}"
+    loop
+    preload="auto"
+    playsinline
+  ></audio>
+
+  <button
+    type="button"
+    class="audio-toggle is-muted"
+    id="audioToggle"
+    aria-pressed="true"
+    aria-label="Ativar som"
+    title="Ativar som"
+  >
+    <span class="audio-toggle__icon audio-toggle__icon--muted" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+    </span>
+    <span class="audio-toggle__icon audio-toggle__icon--on" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+        <path d="M19.07 4.93a10 10 0 010 14.14"/>
+        <path d="M15.54 8.46a5 5 0 010 7.07"/>
+      </svg>
+    </span>
+    <span class="audio-toggle__label">Som</span>
+  </button>
+
   {% include "components/show-sign.html" %}
 
   <p class="show-sign-page__lead">
@@ -15,4 +48,63 @@
     <a class="btn btn--ghost" href="{{ url_for('pagina_confirmar') }}#missao">Ver o convite</a>
   </div>
 </main>
+
+<script>
+  (function () {
+    var audio = document.getElementById("musica-festa");
+    var btn = document.getElementById("audioToggle");
+    if (!audio || !btn) return;
+
+    var volumeAlvo = 0.65;
+
+    function setMutedUI(muted) {
+      btn.classList.toggle("is-muted", muted);
+      btn.setAttribute("aria-pressed", muted ? "true" : "false");
+      btn.setAttribute("aria-label", muted ? "Ativar som" : "Silenciar");
+      btn.title = muted ? "Ativar som" : "Silenciar";
+    }
+
+    async function playMuted() {
+      audio.muted = true;
+      audio.volume = volumeAlvo;
+      try {
+        await audio.play();
+      } catch (_) {}
+      setMutedUI(true);
+    }
+
+    async function unmute() {
+      audio.muted = false;
+      audio.volume = volumeAlvo;
+      try {
+        await audio.play();
+        setMutedUI(false);
+      } catch (_) {
+        setMutedUI(true);
+      }
+    }
+
+    async function mute() {
+      audio.muted = true;
+      setMutedUI(true);
+    }
+
+    btn.addEventListener("click", function () {
+      if (audio.muted || audio.paused) {
+        unmute();
+      } else {
+        mute();
+      }
+    });
+
+    // Tenta iniciar mudo (autoplay permitido); som libera no botão ou ao abrir cortinas
+    audio.addEventListener("canplay", playMuted, { once: true });
+    playMuted();
+
+    window.addEventListener("curtains:open", function () {
+      // Mantém mudo até o convidado clicar — Chrome bloqueia autoplay com som
+      if (audio.paused) playMuted();
+    });
+  })();
+</script>
 {% endblock %}
