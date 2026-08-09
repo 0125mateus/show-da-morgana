@@ -29,7 +29,8 @@
     radial-gradient(circle at 80% 20%, rgba(255, 80, 80, 0.1), transparent 30%),
     linear-gradient(165deg, #0a1630 0%, #12081c 45%, #1a0a14 100%);
   position: relative;
-  z-index: 5;
+  /* Abaixo das cortinas abertas (z-index: 2) para elas emoldurarem a cena */
+  z-index: 1;
   overflow: hidden;
 }
 
@@ -49,7 +50,7 @@
 
 .show-sign-page__lead {
   position: relative;
-  z-index: 2;
+  z-index: 10; /* acima das cortinas abertas */
   margin: 0;
   text-align: center;
   color: rgba(255, 255, 255, 0.92);
@@ -63,7 +64,7 @@
 
 .show-sign-page__cta {
   position: relative;
-  z-index: 2;
+  z-index: 10; /* acima das cortinas abertas */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -80,7 +81,7 @@
 .show-sign {
   --sign-w: min(92vw, 680px);
   position: relative;
-  z-index: 2;
+  z-index: 10; /* letreiro no centro, acima das cortinas laterais */
   width: var(--sign-w);
   aspect-ratio: 1.75 / 1;
   border-radius: 48% / 40%;

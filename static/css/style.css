@@ -433,12 +433,14 @@ a:hover {
   color: rgba(255, 255, 255, 0.92);
 }
 
-body:has(.video-fullscreen) {
-  background: #0a1833;
+body:has(.video-fullscreen),
+body:has(.show-sign-page) {
+  background: #0a1630;
   overflow: hidden;
 }
 
-body:has(.video-fullscreen)::before {
+body:has(.video-fullscreen)::before,
+body:has(.show-sign-page)::before {
   display: none;
 }
 
