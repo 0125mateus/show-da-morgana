@@ -24,28 +24,232 @@
   padding-right: max(1rem, 9vw);
   box-sizing: border-box;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 40%, rgba(180, 20, 40, 0.35), transparent 60%),
-    radial-gradient(circle at 20% 80%, rgba(255, 180, 0, 0.08), transparent 35%),
-    radial-gradient(circle at 80% 20%, rgba(255, 80, 80, 0.1), transparent 30%),
-    linear-gradient(165deg, #0a1630 0%, #12081c 45%, #1a0a14 100%);
+    radial-gradient(ellipse 90% 70% at 50% 120%, rgba(30, 70, 140, 0.35), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 10%, rgba(80, 40, 120, 0.2), transparent 50%),
+    linear-gradient(180deg, #020617 0%, #0a1838 42%, #0c2248 72%, #071225 100%);
   position: relative;
   /* Abaixo das cortinas abertas (z-index: 2) para elas emoldurarem a cena */
   z-index: 1;
   overflow: hidden;
 }
 
-.show-sign-page::before {
-  content: "";
+/* ---------- Fundo espacial ---------- */
+.space-bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.space-bg__stars {
+  position: absolute;
+  inset: 0;
+}
+
+.space-bg__stars--far {
   background-image:
-    radial-gradient(1.5px 1.5px at 12% 22%, rgba(255, 220, 120, 0.7), transparent),
-    radial-gradient(1.5px 1.5px at 78% 18%, rgba(255, 255, 255, 0.5), transparent),
-    radial-gradient(1px 1px at 40% 70%, rgba(255, 200, 80, 0.55), transparent),
-    radial-gradient(1.5px 1.5px at 88% 65%, rgba(255, 255, 255, 0.4), transparent),
-    radial-gradient(1px 1px at 25% 85%, rgba(255, 180, 60, 0.45), transparent);
-  animation: sign-twinkle 4s ease-in-out infinite alternate;
+    radial-gradient(1px 1px at 8% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 18% 40%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 28% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 36% 72%, rgba(200, 220, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 48% 28%, #fff, transparent),
+    radial-gradient(1px 1px at 58% 58%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1px 1px at 68% 14%, #fff, transparent),
+    radial-gradient(1px 1px at 76% 46%, rgba(255, 240, 200, 0.75), transparent),
+    radial-gradient(1px 1px at 86% 78%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 22%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 14% 84%, #fff, transparent),
+    radial-gradient(1px 1px at 42% 90%, rgba(180, 210, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 62% 88%, #fff, transparent),
+    radial-gradient(1px 1px at 94% 62%, rgba(255, 255, 255, 0.6), transparent);
+  opacity: 0.75;
+  animation: space-twinkle 5s ease-in-out infinite alternate;
+}
+
+.space-bg__stars--near {
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 30%, #fff, transparent),
+    radial-gradient(2px 2px at 22% 62%, rgba(255, 245, 180, 0.95), transparent),
+    radial-gradient(1.5px 1.5px at 44% 16%, #fff, transparent),
+    radial-gradient(2px 2px at 55% 74%, rgba(180, 220, 255, 0.95), transparent),
+    radial-gradient(1.5px 1.5px at 72% 34%, #fff, transparent),
+    radial-gradient(2px 2px at 84% 68%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 33% 48%, rgba(255, 230, 160, 0.9), transparent),
+    radial-gradient(2px 2px at 6% 55%, #fff, transparent);
+  animation: space-twinkle 3.2s ease-in-out infinite alternate-reverse;
+}
+
+.space-bg__nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.45;
+}
+
+.space-bg__nebula--a {
+  width: min(55vw, 420px);
+  height: min(40vw, 300px);
+  left: -8%;
+  top: 18%;
+  background: radial-gradient(ellipse, rgba(45, 110, 200, 0.55), transparent 70%);
+}
+
+.space-bg__nebula--b {
+  width: min(50vw, 380px);
+  height: min(38vw, 280px);
+  right: -10%;
+  bottom: 12%;
+  background: radial-gradient(ellipse, rgba(30, 150, 120, 0.35), transparent 70%);
+  opacity: 0.35;
+}
+
+.space-bg__planet {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: inset -10px -8px 18px rgba(0, 0, 0, 0.45);
+}
+
+.space-bg__planet--blue {
+  width: clamp(56px, 12vw, 110px);
+  height: clamp(56px, 12vw, 110px);
+  left: 6%;
+  top: 14%;
+  background:
+    radial-gradient(circle at 32% 30%, #d8f0ff 0%, #5aa8e8 28%, #1f5fa8 62%, #0a2a55 100%);
+  box-shadow:
+    inset -12px -10px 22px rgba(0, 0, 0, 0.45),
+    0 0 28px rgba(80, 160, 255, 0.35);
+  animation: planet-float 9s ease-in-out infinite;
+}
+
+.space-bg__planet--ring {
+  width: clamp(48px, 10vw, 88px);
+  height: clamp(48px, 10vw, 88px);
+  right: 8%;
+  top: 18%;
+  background:
+    radial-gradient(circle at 35% 32%, #fff4c8 0%, #e8b84a 35%, #c47a18 65%, #6a3a10 100%);
+  box-shadow:
+    inset -10px -8px 16px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(255, 190, 80, 0.3);
+  animation: planet-float 11s ease-in-out infinite reverse;
+}
+
+.space-bg__planet--ring::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  height: 42%;
+  transform: translate(-50%, -50%) rotate(-22deg);
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: rgba(255, 220, 140, 0.85);
+  border-bottom-color: rgba(200, 150, 60, 0.55);
+  box-shadow: 0 0 8px rgba(255, 200, 100, 0.35);
+  pointer-events: none;
+}
+
+.space-bg__planet--red {
+  width: clamp(36px, 7vw, 64px);
+  height: clamp(36px, 7vw, 64px);
+  left: 12%;
+  bottom: 18%;
+  background:
+    radial-gradient(circle at 30% 28%, #ffb090 0%, #e24a2e 40%, #8a1c12 100%);
+  box-shadow:
+    inset -8px -6px 14px rgba(0, 0, 0, 0.4),
+    0 0 18px rgba(226, 70, 40, 0.35);
+  animation: planet-float 8s 0.6s ease-in-out infinite;
+}
+
+.space-bg__planet--small {
+  width: clamp(18px, 3.5vw, 28px);
+  height: clamp(18px, 3.5vw, 28px);
+  right: 16%;
+  bottom: 22%;
+  background:
+    radial-gradient(circle at 35% 30%, #c8ffe8 0%, #2f9e5b 55%, #0d3d24 100%);
+  box-shadow: 0 0 12px rgba(47, 158, 91, 0.4);
+  animation: planet-float 7s 1s ease-in-out infinite reverse;
+}
+
+.space-bg__moon {
+  position: absolute;
+  width: clamp(22px, 4.5vw, 36px);
+  height: clamp(22px, 4.5vw, 36px);
+  left: 22%;
+  top: 22%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #fff 0%, #dce6f5 45%, #8a9bb5 100%);
+  box-shadow:
+    inset -4px -3px 8px rgba(0, 0, 0, 0.25),
+    0 0 16px rgba(200, 220, 255, 0.45);
+  animation: planet-float 10s 0.4s ease-in-out infinite;
+}
+
+.space-bg__comet {
+  position: absolute;
+  width: 90px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), #fff);
+  transform: rotate(-28deg);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+.space-bg__comet::before {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(180, 220, 255, 0.9);
+}
+
+.space-bg__comet--1 {
+  top: 28%;
+  left: -10%;
+  animation: comet-fly 11s linear infinite;
+}
+
+.space-bg__comet--2 {
+  top: 62%;
+  left: -15%;
+  width: 70px;
+  animation: comet-fly 16s 5s linear infinite;
+}
+
+@keyframes space-twinkle {
+  from { opacity: 0.45; }
+  to { opacity: 0.95; }
+}
+
+@keyframes planet-float {
+  0%,
+  100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes comet-fly {
+  0% {
+    opacity: 0;
+    transform: rotate(-28deg) translateX(0) translateY(0);
+  }
+  8% { opacity: 1; }
+  70% { opacity: 0.85; }
+  100% {
+    opacity: 0;
+    transform: rotate(-28deg) translateX(120vw) translateY(42vh);
+  }
 }
 
 .show-sign-page__lead {
@@ -491,8 +695,16 @@
   .show-sign__line--hero,
   .show-sign__face::before,
   .show-sign__face::after,
-  .show-sign-page::before {
+  .space-bg__stars,
+  .space-bg__planet,
+  .space-bg__moon,
+  .space-bg__comet {
     animation: none !important;
+  }
+
+  .space-bg__comet {
+    opacity: 0.55;
+    transform: rotate(-28deg) translateX(35vw) translateY(12vh);
   }
 
   .show-sign__star.show-sign__star--da {
