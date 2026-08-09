@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="{{ url_for('show_sign_asset', filename='show-sign.css') }}">
 </head>
 <body class="invite-app-body {% block body_class %}{% endblock %}">
+  <div class="page-light-flash" id="pageLightFlash" aria-hidden="true"></div>
   {% include "components/theater-curtain.html" %}
 
   <div class="app-shell">
@@ -54,5 +55,49 @@
 
   <script src="{{ url_for('theater_curtain_asset', filename='theater-curtain.js') }}" defer></script>
   <script src="{{ url_for('show_sign_asset', filename='show-sign.js') }}" defer></script>
+  <script>
+    (function () {
+      var KEY = "morgana-entrada-luz";
+
+      /* Chegada: fade-in + fade-up com véu de luz */
+      try {
+        if (sessionStorage.getItem(KEY) === "1") {
+          sessionStorage.removeItem(KEY);
+          document.body.classList.add("page-enter-light");
+          window.setTimeout(function () {
+            document.body.classList.remove("page-enter-light");
+          }, 1100);
+        }
+      } catch (_) {}
+
+      /* Saída: clique em Confirmar presença (home → convite) */
+      document.addEventListener("click", function (e) {
+        var link = e.target.closest("a.btn--primary[href]");
+        if (!link) return;
+
+        var href = link.getAttribute("href") || "";
+        var vaiConfirmar =
+          href.indexOf("/confirmar") !== -1 ||
+          link.textContent.toLowerCase().indexOf("confirmar presença") !== -1;
+
+        /* Só anima a ida para a página de confirmação (não âncoras #formulario) */
+        if (!vaiConfirmar || href.charAt(0) === "#") return;
+
+        e.preventDefault();
+
+        var flash = document.getElementById("pageLightFlash");
+        document.body.classList.add("page-flashing");
+        if (flash) flash.classList.add("is-on");
+
+        try {
+          sessionStorage.setItem(KEY, "1");
+        } catch (_) {}
+
+        window.setTimeout(function () {
+          window.location.href = link.href;
+        }, 720);
+      });
+    })();
+  </script>
 </body>
 </html>

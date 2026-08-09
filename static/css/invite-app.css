@@ -160,3 +160,94 @@ body.no-app-nav .app-bottom-nav {
 body.no-app-nav .app-main {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* ---------- Transição: luz clara + fade up ---------- */
+.page-light-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 45%, #fff 0%, rgba(255, 248, 220, 0.95) 28%, rgba(255, 230, 140, 0.55) 55%, transparent 78%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 230, 0.85));
+  mix-blend-mode: screen;
+}
+
+.page-light-flash.is-on {
+  animation: page-light-burst 0.85s ease-out forwards;
+  pointer-events: auto;
+}
+
+@keyframes page-light-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+    filter: brightness(1.1);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1.05);
+    filter: brightness(1.35);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(1.5);
+  }
+}
+
+body.page-flashing .app-shell {
+  transition: opacity 0.55s ease, filter 0.55s ease, transform 0.55s ease;
+  opacity: 0.35;
+  filter: brightness(1.4) saturate(0.85);
+  transform: scale(1.02);
+}
+
+/* Entrada na página de confirmação */
+body.page-enter-light .app-main > * {
+  animation: page-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.page-enter-light::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 19999;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 245, 200, 0.55) 40%, transparent 70%);
+  animation: page-light-fadeout 1s ease-out forwards;
+}
+
+@keyframes page-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes page-light-fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-light-flash.is-on,
+  body.page-enter-light .app-main > *,
+  body.page-enter-light::after {
+    animation: none !important;
+  }
+
+  body.page-enter-light::after {
+    display: none;
+  }
+}
