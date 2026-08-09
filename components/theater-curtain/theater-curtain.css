@@ -14,8 +14,8 @@
   --haste-brilho: #8a96a6;
   --ouro: #e8c84a;
   --ouro-escuro: #a8841e;
-  /* Mais estreita aberta para não cobrir título/botões */
-  --largura-aberta: 7.5vw;
+  /* Mais estreita aberta — coluna do app tem max 480px */
+  --largura-aberta: 5.5vw;
   --largura-fechada: 51%;
   --tempo: 4.5s;
   --ease: cubic-bezier(0.33, 0.1, 0.25, 1);

@@ -16,7 +16,7 @@ import os
 from pathlib import Path
 from urllib.parse import quote
 
-from flask import Flask, flash, redirect, render_template, request, send_from_directory, url_for
+from flask import Flask, flash, jsonify, redirect, render_template, request, send_from_directory, url_for
 
 from models import EVENTO, formatar_data_br, prazo_aberto
 from storage import adicionar, excluir, listar, resumo
@@ -55,9 +55,36 @@ def injeta_evento():
     }
 
 
+@app.get("/manifest.webmanifest")
+def web_manifest():
+    """Manifest PWA — mesma linha do app do Universo Vulcãozinho."""
+    return jsonify(
+        {
+            "name": "O Show da Morgana",
+            "short_name": "Morgana",
+            "description": "Confirme presença no aniversário da Morgana.",
+            "start_url": "/",
+            "scope": "/",
+            "display": "standalone",
+            "orientation": "portrait",
+            "background_color": "#020617",
+            "theme_color": "#0a1838",
+            "lang": "pt-BR",
+            "icons": [
+                {
+                    "src": url_for("static", filename="img/convite-frente.png", _external=False),
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "any",
+                }
+            ],
+        }
+    ), 200, {"Content-Type": "application/manifest+json"}
+
+
 @app.get("/")
 def index():
-    """Página do vídeo."""
+    """Home com letreiro (app shell)."""
     return render_template("index.html")
 
 

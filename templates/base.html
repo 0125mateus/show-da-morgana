@@ -2,19 +2,56 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{% block title %}O Show da Morgana{% endblock %}</title>
   <meta name="description" content="Confirme presença no aniversário da Morgana — O Show da Morgana, 19 de setembro.">
+  <meta name="theme-color" content="#0a1838">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Show da Morgana">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="{{ url_for('web_manifest') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/convite-frente.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Luckiest+Guy&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/invite-app.css') }}">
   <link rel="stylesheet" href="{{ url_for('theater_curtain_asset', filename='theater-curtain.css') }}">
   <link rel="stylesheet" href="{{ url_for('show_sign_asset', filename='show-sign.css') }}">
 </head>
-<body>
+<body class="invite-app-body {% block body_class %}{% endblock %}">
   {% include "components/theater-curtain.html" %}
-  {% block body %}{% endblock %}
+
+  <div class="app-shell">
+    <div class="app-main">
+      {% block body %}{% endblock %}
+    </div>
+
+    {% block bottom_nav %}
+    <nav class="app-bottom-nav" aria-label="Menu principal">
+      <a
+        href="{{ url_for('index') }}"
+        class="app-nav-item {% if request.endpoint == 'index' %}active{% endif %}"
+      >
+        <span class="app-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5"/><path d="M5 10.5V20h14v-9.5"/></svg>
+        </span>
+        <span>Início</span>
+      </a>
+      <a
+        href="{{ url_for('pagina_confirmar') }}"
+        class="app-nav-item {% if request.endpoint in ['pagina_confirmar', 'obrigado'] %}active{% endif %}"
+      >
+        <span class="app-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 7h11a2 2 0 012 2v9a2 2 0 01-2 2H8a2 2 0 01-2-2V9a2 2 0 012-2z"/><path d="M6 10H4a1 1 0 00-1 1v8a2 2 0 002 2h2"/><path d="M12 11v5"/><path d="M9.5 13.5h5"/></svg>
+        </span>
+        <span>Confirmar</span>
+      </a>
+    </nav>
+    {% endblock %}
+  </div>
+
   <script src="{{ url_for('theater_curtain_asset', filename='theater-curtain.js') }}" defer></script>
   <script src="{{ url_for('show_sign_asset', filename='show-sign.js') }}" defer></script>
 </body>

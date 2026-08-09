@@ -1,0 +1,150 @@
+/* App convite — mesma linha do hospede-app (Universo Vulcãozinho)
+   Coluna de celular · safe-area · bottom nav · PWA-ready */
+
+:root {
+  --app-primary: #1b3f7a;
+  --app-secondary: #3d6bb5;
+  --app-accent: #f5c518;
+  --app-danger: #e23b2e;
+  --app-ink: #15233d;
+  --app-muted: #52627a;
+  --app-shell-max: 480px;
+  --app-nav-h: 4.25rem;
+}
+
+.invite-app-body {
+  min-height: 100dvh;
+  min-height: 100svh;
+  -webkit-tap-highlight-color: transparent;
+  background: #020617;
+}
+
+.app-shell {
+  width: min(100%, var(--app-shell-max));
+  max-width: var(--app-shell-max);
+  margin: 0 auto;
+  min-height: 100dvh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--app-nav-h) + env(safe-area-inset-bottom));
+}
+
+/* Páginas que já são full-height (home do letreiro) */
+.app-main > .show-sign-page {
+  min-height: calc(100dvh - var(--app-nav-h) - env(safe-area-inset-bottom));
+  min-height: calc(100svh - var(--app-nav-h) - env(safe-area-inset-bottom));
+}
+
+/* Bottom navigation — espelha o app do Vulcãozinho */
+.app-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--app-shell-max);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.15rem;
+  z-index: 10040;
+  background: rgba(8, 16, 36, 0.92);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-top: 1px solid rgba(255, 215, 0, 0.22);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.35);
+  padding: 0.4rem 0.45rem calc(0.4rem + env(safe-area-inset-bottom));
+}
+
+.app-nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: 48px;
+  padding: 0.45rem 0.35rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: "Fredoka", "Nunito", system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 14px;
+  transition: color 0.2s ease, transform 0.15s ease, background 0.2s ease;
+}
+
+.app-nav-item:active {
+  transform: scale(0.94);
+}
+
+.app-nav-item.active {
+  color: #ffe566;
+  background: rgba(255, 215, 0, 0.12);
+}
+
+.app-nav-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  opacity: 0.85;
+}
+
+.app-nav-item.active .app-nav-icon {
+  opacity: 1;
+  transform: translateY(-1px) scale(1.06);
+}
+
+.app-nav-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Botão de som alinhado à coluna do app */
+.invite-app-body .audio-toggle {
+  left: auto;
+  right: max(0.75rem, calc(50% - (var(--app-shell-max) / 2) + 0.75rem));
+}
+
+/* Desktop: atmosfera fora da coluna (como preview do app) */
+@media (min-width: 520px) {
+  .invite-app-body {
+    background:
+      radial-gradient(ellipse 50% 40% at 50% 0%, rgba(40, 80, 160, 0.25), transparent 55%),
+      #020617;
+  }
+
+  .app-shell {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 24px 80px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* Admin: sem barra inferior */
+body.no-app-nav .app-bottom-nav {
+  display: none;
+}
+
+body.no-app-nav .app-main {
+  padding-bottom: env(safe-area-inset-bottom);
+}

@@ -436,6 +436,13 @@ a:hover {
 body:has(.video-fullscreen),
 body:has(.show-sign-page) {
   background: #020617;
+}
+
+body:has(.show-sign-page) {
+  overflow: hidden;
+}
+
+body:has(.show-sign-page) .app-main {
   overflow: hidden;
 }
 
