@@ -1093,13 +1093,95 @@ tbody tr:hover {
 }
 
 @media (max-width: 560px) {
+  .wrap {
+    width: min(100% - 1.5rem, 720px);
+  }
+
   .field-row,
   .status-grid {
     grid-template-columns: 1fr;
   }
 
+  .hero {
+    min-height: 100svh;
+    align-items: end;
+  }
+
+  .hero__content {
+    padding: 1.5rem 0 max(2rem, env(safe-area-inset-bottom));
+  }
+
+  .hero__lead {
+    font-size: 1rem;
+    max-width: 28ch;
+  }
+
   .hero__scroll {
     display: none;
+  }
+
+  .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .cta-row .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    text-align: center;
+  }
+
+  .section {
+    padding: 2.5rem 0;
+  }
+
+  .section__title {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+  }
+
+  .facts {
+    gap: 0.85rem;
+  }
+
+  .fact__value {
+    font-size: 1.05rem;
+  }
+
+  .mission__art {
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .form-shell {
+    padding: 1.25rem 1rem;
+    border-radius: 1.1rem;
+  }
+
+  .form-shell h2 {
+    font-size: 1.45rem;
+  }
+
+  input,
+  select,
+  textarea,
+  .btn {
+    font-size: 16px; /* evita zoom automático no iOS */
+  }
+
+  .footer {
+    padding: 1.25rem 0 max(1.5rem, env(safe-area-inset-bottom));
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .footer .wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: center;
   }
 }
 

@@ -672,19 +672,109 @@
 }
 
 @media (max-width: 560px) {
+  .show-sign-page {
+    min-height: 100svh;
+    gap: 1rem;
+    padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+    padding-left: max(0.75rem, 7vw);
+    padding-right: max(0.75rem, 7vw);
+    place-content: center;
+  }
+
+  .show-sign-page__lead {
+    font-size: 0.98rem;
+    padding: 0 0.5rem;
+    line-height: 1.4;
+  }
+
+  .show-sign-page__cta .btn {
+    width: min(100%, 280px);
+    justify-content: center;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .audio-toggle {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.65rem, env(safe-area-inset-right));
+    width: 44px;
+    height: 44px;
+  }
+
   .show-sign {
-    --sign-w: min(94vw, 420px);
-    aspect-ratio: 1.55 / 1;
+    --sign-w: min(92vw, 420px);
+    aspect-ratio: 1.5 / 1;
     border-radius: 42% / 36%;
   }
 
   .show-sign__face {
-    inset: 9px;
+    inset: 8px;
     border-radius: 40% / 34%;
+  }
+
+  .show-sign__content {
+    padding: 7% 8%;
   }
 
   .show-sign__line--hero {
     -webkit-text-stroke: 1px #fff3c4;
+    font-size: clamp(1.85rem, 11vw, 3rem);
+  }
+
+  .show-sign__line--top {
+    font-size: clamp(0.95rem, 4.8vw, 1.4rem);
+  }
+
+  .show-sign__bulb {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Planetas menores no celular para não cobrir o letreiro */
+  .space-bg__planet--blue {
+    width: 48px;
+    height: 48px;
+    left: 3%;
+    top: 10%;
+  }
+
+  .space-bg__planet--ring {
+    width: 40px;
+    height: 40px;
+    right: 3%;
+    top: 12%;
+  }
+
+  .space-bg__planet--red {
+    width: 28px;
+    height: 28px;
+    bottom: 14%;
+  }
+
+  .space-bg__planet--small,
+  .space-bg__moon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .space-bg__nebula {
+    filter: blur(22px);
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 380px) {
+  .show-sign {
+    --sign-w: 94vw;
+    aspect-ratio: 1.42 / 1;
+  }
+
+  .show-sign__line--hero {
+    font-size: clamp(1.6rem, 12vw, 2.4rem);
+  }
+
+  .space-bg__planet--ring::after {
+    border-width: 2px;
   }
 }
 
