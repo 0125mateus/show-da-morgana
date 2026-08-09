@@ -13,11 +13,11 @@
 
 <button
   type="button"
-  class="audio-toggle is-muted"
+  class="audio-toggle"
   id="audioToggle"
-  aria-pressed="true"
-  aria-label="Ativar som"
-  title="Ativar som"
+  aria-pressed="false"
+  aria-label="Silenciar"
+  title="Silenciar"
 >
   <span class="audio-toggle__icon audio-toggle__icon--muted" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -55,7 +55,7 @@
     if (!audio || !btn) return;
 
     var volumeAlvo = 0.7;
-    var somLigado = false;
+    var somLigado = true; /* começa “ativado”; se o navegador bloquear, ajusta */
 
     function atualizarBotao() {
       btn.classList.toggle("is-muted", !somLigado);
@@ -64,7 +64,7 @@
       btn.title = somLigado ? "Silenciar" : "Ativar som";
     }
 
-    function tentarTocarMudo() {
+    function tocarMudo() {
       audio.muted = true;
       audio.volume = volumeAlvo;
       var p = audio.play();
@@ -76,17 +76,20 @@
       audio.volume = volumeAlvo;
       var p = audio.play();
       if (p && p.then) {
-        p.then(function () {
+        return p.then(function () {
           somLigado = true;
           atualizarBotao();
+          return true;
         }).catch(function () {
           somLigado = false;
+          tocarMudo();
           atualizarBotao();
+          return false;
         });
-      } else {
-        somLigado = !audio.muted;
-        atualizarBotao();
       }
+      somLigado = !audio.muted;
+      atualizarBotao();
+      return Promise.resolve(somLigado);
     }
 
     function desligarSom() {
@@ -95,24 +98,40 @@
       atualizarBotao();
     }
 
-    function aoClicarSom(e) {
+    btn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      if (somLigado) {
+      if (somLigado && !audio.muted) {
         desligarSom();
       } else {
         ligarSom();
       }
+    });
+
+    function iniciarComSom() {
+      ligarSom().then(function (ok) {
+        if (!ok) {
+          /* Navegador bloqueou autoplay com som: libera no 1º toque na página */
+          var liberar = function (e) {
+            if (e && btn.contains(e.target)) return; /* o próprio botão cuida do clique */
+            ligarSom();
+            window.removeEventListener("pointerdown", liberar, true);
+            window.removeEventListener("keydown", liberar, true);
+          };
+          window.addEventListener("pointerdown", liberar, true);
+          window.addEventListener("keydown", liberar, true);
+        }
+      });
     }
 
-    btn.addEventListener("click", aoClicarSom);
-
-    audio.addEventListener("canplay", tentarTocarMudo, { once: true });
-    tentarTocarMudo();
+    audio.addEventListener("canplay", iniciarComSom, { once: true });
+    iniciarComSom();
     atualizarBotao();
 
     window.addEventListener("curtains:open", function () {
-      if (audio.paused) tentarTocarMudo();
+      if (!somLigado || audio.muted || audio.paused) {
+        ligarSom();
+      }
     });
   })();
 </script>
