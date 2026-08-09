@@ -1,96 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}O Show da Morgana — Eu quero saber{% endblock %}
+{% block title %}O Show da Morgana{% endblock %}
 
 {% block body %}
-<main class="video-fullscreen" id="clip" aria-label="Vídeo do convite">
-  <video
-    id="video-festa"
-    class="video-fullscreen__player"
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="auto"
-    poster="{{ url_for('static', filename='img/convite-frente.png') }}"
-  >
-    <source src="{{ url_for('static', filename='video/eu-quero-saber.mp4') }}" type="video/mp4">
-  </video>
+<main class="show-sign-page" id="inicio" aria-label="Letreiro do Show da Morgana">
+  {% include "components/show-sign.html" %}
 
-  <div class="video-fullscreen__veil" aria-hidden="true"></div>
+  <p class="show-sign-page__lead">
+    Eu quero saber… se você vem comemorar comigo!
+  </p>
 
-  <div class="video-fullscreen__ui">
-    <p class="video-fullscreen__eyebrow">O Show da Morgana · {{ evento.idade }} anos</p>
-    <h1 class="brand video-fullscreen__brand">O Show da <span>Morgana</span></h1>
-    <p class="video-fullscreen__lead">Eu quero saber… se você vem comemorar comigo!</p>
-    <div class="cta-row">
-      <a class="btn btn--primary" href="{{ url_for('pagina_confirmar') }}">Confirmar presença</a>
-      <a class="btn btn--ghost" href="{{ url_for('pagina_confirmar') }}#missao">Ver o convite</a>
-    </div>
+  <div class="show-sign-page__cta cta-row">
+    <a class="btn btn--primary" href="{{ url_for('pagina_confirmar') }}">Confirmar presença</a>
+    <a class="btn btn--ghost" href="{{ url_for('pagina_confirmar') }}#missao">Ver o convite</a>
   </div>
 </main>
-
-<script>
-  const video = document.getElementById("video-festa");
-  let somLiberado = false;
-
-  async function tocarMudo() {
-    if (!video) return;
-    video.muted = true;
-    try {
-      await video.play();
-    } catch (_) {}
-  }
-
-  function prepararLiberacaoPorToque() {
-    const liberar = async () => {
-      if (!video || somLiberado) return;
-      video.muted = false;
-      video.volume = 0.7;
-      try {
-        await video.play();
-        somLiberado = true;
-      } catch (_) {}
-    };
-    ["pointerdown", "touchstart", "keydown"].forEach((evt) => {
-      window.addEventListener(evt, liberar, { once: true, passive: true });
-    });
-  }
-
-  async function ligarSomNasCortinas() {
-    if (!video || somLiberado) return;
-
-    // Garante que o vídeo está rodando
-    try {
-      await video.play();
-    } catch (_) {}
-
-    // Tenta ligar o áudio no momento da abertura
-    video.muted = false;
-    video.volume = 0.7;
-    try {
-      await video.play();
-      somLiberado = true;
-    } catch (_) {
-      // Se o navegador bloquear, mantém o vídeo andando mudo
-      // e liga o som no primeiro toque
-      video.muted = true;
-      await tocarMudo();
-      prepararLiberacaoPorToque();
-    }
-  }
-
-  // Desde o início: vídeo rodando mudo (atrás das cortinas)
-  if (video) {
-    video.muted = true;
-    video.addEventListener("canplay", tocarMudo, { once: true });
-    tocarMudo();
-  }
-
-  // Quando as cortinas abrem → tenta ligar o som
-  window.addEventListener("curtains:open", ligarSomNasCortinas);
-
-  // Reserva: se o evento falhar, liga no tempo da abertura (~700ms)
-  window.setTimeout(ligarSomNasCortinas, 750);
-</script>
 {% endblock %}

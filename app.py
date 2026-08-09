@@ -5,7 +5,7 @@ Rodar:
     pip install -r requirements.txt
     python app.py
 
-Vídeo:     http://127.0.0.1:5000/
+Letreiro:  http://127.0.0.1:5000/
 Formulário: http://127.0.0.1:5000/confirmar
 Painel:     http://127.0.0.1:5000/admin
 """
@@ -24,13 +24,21 @@ from storage import adicionar, excluir, listar, resumo
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "show-da-morgana-2026")
 
-THEATER_CURTAIN_DIR = Path(__file__).resolve().parent / "components" / "theater-curtain"
+COMPONENTS_DIR = Path(__file__).resolve().parent / "components"
+THEATER_CURTAIN_DIR = COMPONENTS_DIR / "theater-curtain"
+SHOW_SIGN_DIR = COMPONENTS_DIR / "show-sign"
 
 
 @app.get("/components/theater-curtain/<path:filename>")
 def theater_curtain_asset(filename: str):
     """Serve CSS/JS do componente de cortina (isolado)."""
     return send_from_directory(THEATER_CURTAIN_DIR, filename)
+
+
+@app.get("/components/show-sign/<path:filename>")
+def show_sign_asset(filename: str):
+    """Serve CSS/JS do letreiro luminoso."""
+    return send_from_directory(SHOW_SIGN_DIR, filename)
 
 
 def link_whatsapp(texto: str) -> str:

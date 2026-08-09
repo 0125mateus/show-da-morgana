@@ -7,13 +7,15 @@
   <meta name="description" content="Confirme presença no aniversário da Morgana — O Show da Morgana, 19 de setembro.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Luckiest+Guy&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('theater_curtain_asset', filename='theater-curtain.css') }}">
+  <link rel="stylesheet" href="{{ url_for('show_sign_asset', filename='show-sign.css') }}">
 </head>
 <body>
   {% include "components/theater-curtain.html" %}
   {% block body %}{% endblock %}
   <script src="{{ url_for('theater_curtain_asset', filename='theater-curtain.js') }}" defer></script>
+  <script src="{{ url_for('show_sign_asset', filename='show-sign.js') }}" defer></script>
 </body>
 </html>
