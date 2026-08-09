@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar presença — O Show da Morgana{% endblock %}
+
+{% block body %}
+<header class="hero" id="convite">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__veil" aria-hidden="true"></div>
+  <div class="hero__sparkles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="wrap hero__content">
+    <p class="hero__eyebrow">Convite especial · {{ evento.idade }} anos</p>
+    <h1 class="brand">O Show da <span>Morgana</span></h1>
+    <p class="hero__lead">
+      Missão especial de {{ evento.idade }} anos: descobrir juntos como a diversão
+      fica ainda maior com você na festa!
+    </p>
+    <div class="cta-row">
+      <a class="btn btn--primary" href="#formulario">Confirmar presença</a>
+      <a class="btn btn--ghost" href="#missao">Ver a missão</a>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><i></i> Deslize</div>
+</header>
+
+<section class="section" id="missao">
+  <div class="wrap mission">
+    <div class="mission__copy reveal">
+      <h2 class="section__title">Ficha de curiosidades</h2>
+      <p class="section__lead">Tudo o que um pequeno cientista precisa saber antes da descoberta.</p>
+
+      <div class="facts">
+        <div class="fact reveal reveal-delay-1">
+          <p class="fact__label">Quando</p>
+          <p class="fact__value">{{ data_festa_br }} · {{ evento.horario }}</p>
+        </div>
+        <div class="fact reveal reveal-delay-2">
+          <p class="fact__label">Onde</p>
+          <p class="fact__value">{{ evento.endereco }}</p>
+        </div>
+        <div class="fact reveal reveal-delay-3">
+          <p class="fact__label">Missão</p>
+          <p class="fact__value">{{ evento.missao }}</p>
+        </div>
+        <div class="fact reveal reveal-delay-3">
+          <p class="fact__label">Hipótese</p>
+          <p class="fact__value">{{ evento.hipotese }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="mission__art reveal reveal-delay-2">
+      <img src="{{ url_for('static', filename='img/convite-verso.png') }}" alt="Verso do convite do Show da Morgana">
+    </div>
+  </div>
+</section>
+
+<section class="section confirm" id="formulario">
+  <div class="wrap">
+    <h2 class="section__title reveal">Confirmação de presença</h2>
+
+    <div class="form-shell reveal reveal-delay-1">
+      {% if prazo_ok %}
+        <div class="deadline">Prazo: até {{ prazo_br }}</div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash">
+              {% for category, message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" action="{{ url_for('pagina_confirmar') }}">
+          <div class="field">
+            <label for="nome">Seu nome</label>
+            <input id="nome" name="nome" type="text" required maxlength="80" placeholder="Ex.: Ana (mamãe da Laura)" autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label>Você vem?</label>
+            <div class="status-grid">
+              <label class="status-option">
+                <input type="radio" name="status" value="sim" checked>
+                <span>Sim, vou!</span>
+              </label>
+              <label class="status-option status-option--no">
+                <input type="radio" name="status" value="nao">
+                <span>Não posso</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-row" id="contagem">
+            <div class="field">
+              <label for="adultos">Adultos</label>
+              <input id="adultos" name="adultos" type="number" min="0" max="20" value="1">
+            </div>
+            <div class="field">
+              <label for="criancas">Crianças</label>
+              <input id="criancas" name="criancas" type="number" min="0" max="20" value="1">
+            </div>
+          </div>
+          <p class="hint">Conte quantas pessoas da sua família vão à missão.</p>
+
+          <div class="field" style="margin-top: 1rem;">
+            <label for="mensagem">Recado (opcional)</label>
+            <textarea id="mensagem" name="mensagem" rows="3" maxlength="280" placeholder="Um beijo pra Morgana..."></textarea>
+          </div>
+
+          <button class="btn btn--primary btn--full" type="submit">Enviar confirmação</button>
+        </form>
+      {% else %}
+        <div class="closed">
+          <strong>Prazo encerrado.</strong>
+          <p>As confirmações eram até {{ prazo_br }}. Em dúvida, fale no WhatsApp do convite.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <a href="{{ url_for('index') }}">← Voltar ao vídeo</a>
+    · O Show da Morgana · {{ data_festa_br }} ·
+    <a href="{{ url_for('admin') }}">Área da família</a>
+  </div>
+</footer>
+
+<script>
+  const radios = document.querySelectorAll('input[name="status"]');
+  const contagem = document.getElementById("contagem");
+  function sync() {
+    const sim = document.querySelector('input[name="status"]:checked')?.value === "sim";
+    if (contagem) contagem.style.opacity = sim ? "1" : "0.45";
+  }
+  radios.forEach((r) => r.addEventListener("change", sync));
+  sync();
+
+  const revelaveis = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+    revelaveis.forEach((el) => io.observe(el));
+  } else {
+    revelaveis.forEach((el) => el.classList.add("is-visible"));
+  }
+</script>
+{% endblock %}

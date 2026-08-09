@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Obrigada! — O Show da Morgana{% endblock %}
+
+{% block body %}
+<main class="thanks">
+  <div class="wrap">
+    <div class="thanks__panel">
+      {% if confirmacao.status == "sim" %}
+        <div class="badge">Missão aceita!</div>
+        <h1>Oba, {{ confirmacao.nome }}!</h1>
+        <p>
+          Confirmação registrada:
+          <strong>{{ confirmacao.adultos }}</strong> adulto(s) e
+          <strong>{{ confirmacao.criancas }}</strong> criança(s).
+        </p>
+        <p>Quer reforçar no WhatsApp do convite? É só um toque:</p>
+      {% else %}
+        <div class="badge">Resposta recebida</div>
+        <h1>Obrigada, {{ confirmacao.nome }}</h1>
+        <p>Sentiremos sua falta nessa descoberta — obrigada por avisar!</p>
+      {% endif %}
+
+      <div class="cta-row" style="justify-content: center; margin-top: 1.25rem;">
+        <a class="btn btn--verde" href="{{ whatsapp_url }}" target="_blank" rel="noopener">
+          Enviar no WhatsApp
+        </a>
+        <a class="btn btn--azul" href="{{ url_for('pagina_confirmar') }}">Voltar</a>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

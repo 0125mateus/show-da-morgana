@@ -1,0 +1,340 @@
+/* =========================================================
+   Cortinas espelhadas — mesma forma nos dois lados
+   Namespace: .theater-curtain
+   ========================================================= */
+
+.theater-curtain {
+  --vermelho-sombra: #7a1020;
+  --vermelho-escuro: #a01830;
+  --vermelho: #c41e3a;
+  --vermelho-claro: #e0324f;
+  --vermelho-brilho: #f04a62;
+  --haste: #2a3340;
+  --haste-meio: #4a5564;
+  --haste-brilho: #8a96a6;
+  --ouro: #e8c84a;
+  --ouro-escuro: #a8841e;
+  /* Mais estreita aberta para não cobrir título/botões */
+  --largura-aberta: 7.5vw;
+  --largura-fechada: 51%;
+  --tempo: 4.5s;
+  --ease: cubic-bezier(0.33, 0.1, 0.25, 1);
+
+  /* Silhueta mais colada na lateral (menos avanço ao centro) */
+  --tc-shape-open: polygon(
+    0% 0%,
+    100% 0%,
+    82% 8%,
+    68% 18%,
+    58% 30%,
+    50% 42%,
+    46% 50%,
+    50% 58%,
+    58% 70%,
+    68% 82%,
+    82% 92%,
+    100% 100%,
+    0% 100%
+  );
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+  background: transparent;
+  transition: z-index 0s linear var(--tempo);
+}
+
+/* Aberta: fica atrás do texto/botões da página */
+.theater-curtain:not(.curtains-closed) {
+  z-index: 2;
+  transition: z-index 0s linear 0s;
+}
+
+/* ---------- Haste / postes ---------- */
+.theater-curtain .haste-superior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  z-index: 6;
+  background: linear-gradient(
+    180deg,
+    var(--haste-brilho) 0%,
+    var(--haste-meio) 35%,
+    var(--haste) 100%
+  );
+  box-shadow:
+    0 5px 12px rgba(0, 0, 0, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.2) inset;
+}
+
+.theater-curtain .poste-esquerdo,
+.theater-curtain .poste-direito {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    #1a222c 0%,
+    var(--haste-brilho) 30%,
+    var(--haste-meio) 55%,
+    #1a222c 100%
+  );
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+.theater-curtain .poste-esquerdo { left: 0; }
+.theater-curtain .poste-direito { right: 0; }
+
+/* ---------- Painéis ---------- */
+.theater-curtain .cortina-esquerda,
+.theater-curtain .cortina-direita {
+  position: absolute;
+  top: 12px;
+  bottom: 0;
+  width: var(--largura-aberta);
+  min-width: 40px;
+  max-width: 110px;
+  z-index: 4;
+  transition:
+    width var(--tempo) var(--ease),
+    min-width var(--tempo) var(--ease),
+    max-width var(--tempo) var(--ease);
+  will-change: width;
+}
+
+.theater-curtain .cortina-esquerda {
+  left: 0;
+}
+
+.theater-curtain .cortina-direita {
+  right: 0;
+  left: auto;
+}
+
+/* Face idêntica nos dois lados; direita só espelha */
+.theater-curtain .cortina-face {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(8px 0 22px rgba(0, 0, 0, 0.3));
+}
+
+.theater-curtain .cortina-direita .cortina-face {
+  transform: scaleX(-1);
+  transform-origin: center center;
+}
+
+/* FECHADA */
+.theater-curtain.curtains-closed .cortina-esquerda,
+.theater-curtain.curtains-closed .cortina-direita {
+  width: var(--largura-fechada);
+  min-width: 0;
+  max-width: none;
+}
+
+/* ---------- Anéis ---------- */
+.theater-curtain .cortina-aneis {
+  position: absolute;
+  top: -4px;
+  left: 2%;
+  right: 2%;
+  height: 18px;
+  z-index: 5;
+  background-image: radial-gradient(
+    circle at 50% 40%,
+    var(--ouro) 0 36%,
+    var(--ouro-escuro) 38% 50%,
+    transparent 52%
+  );
+  background-size: 16.66% 100%;
+  background-repeat: repeat-x;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+  transition: background-size var(--tempo) var(--ease);
+}
+
+.theater-curtain:not(.curtains-closed) .cortina-aneis {
+  background-size: 14% 100%;
+}
+
+.theater-curtain.curtains-closed .cortina-aneis {
+  background-size: 8% 100%;
+}
+
+/* ---------- Tecido (mesma forma nos dois lados via espelho) ---------- */
+.theater-curtain .cortina-tecido {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  transition:
+    clip-path var(--tempo) var(--ease),
+    box-shadow var(--tempo) var(--ease),
+    background-size var(--tempo) var(--ease);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, transparent 10%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.22) 100%),
+    /* vinco da amarração no meio */
+    radial-gradient(ellipse 85% 16% at 55% 50%, rgba(0, 0, 0, 0.4), transparent 70%),
+    repeating-linear-gradient(
+      90deg,
+      var(--vermelho-sombra) 0px,
+      var(--vermelho-escuro) 7px,
+      var(--vermelho) 14px,
+      var(--vermelho-claro) 21px,
+      var(--vermelho-brilho) 28px,
+      var(--vermelho) 35px,
+      var(--vermelho-escuro) 42px,
+      var(--vermelho-sombra) 50px
+    );
+  box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.28);
+}
+
+/* ABERTA: mesma curva (direita herda via scaleX(-1)) */
+.theater-curtain:not(.curtains-closed) .cortina-tecido {
+  clip-path: var(--tc-shape-open);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48% 100%;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat-x;
+  box-shadow:
+    inset -10px 0 18px rgba(0, 0, 0, 0.35),
+    inset 4px 0 12px rgba(255, 70, 70, 0.08);
+}
+
+/* FECHADA: retângulo (sem curva) */
+.theater-curtain.curtains-closed .cortina-tecido {
+  clip-path: none;
+  background-size: 100% 100%, 100% 100%, 0 0, 100% 100%;
+}
+
+.theater-curtain .cortina-tecido::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    transparent 8px,
+    rgba(0, 0, 0, 0.1) 16px,
+    transparent 24px
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* ---------- Laço (mesmo nos dois; espelho cuida da orientação) ---------- */
+.theater-curtain .cortina-laco {
+  position: absolute;
+  /* centro do tecido visível na cintura (~0–46% da largura) */
+  top: 50%;
+  left: 23%;
+  z-index: 7;
+  width: 36px;
+  height: 36px;
+  margin-left: 0;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transition:
+    opacity 0.7s ease 3.2s,
+    transform 0.7s var(--ease) 3.2s;
+}
+
+.theater-curtain .cortina-laco::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 11px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #8a5a00,
+    #d6a62a,
+    #ffe58a,
+    #c18b13,
+    #795000
+  );
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 220, 0.5);
+}
+
+.theater-curtain .cortina-laco::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff4c2, #d6a62a 45%, #8a5a00 78%);
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.45),
+    inset 0 2px 2px rgba(255, 255, 255, 0.4);
+}
+
+.theater-curtain.curtains-closed .cortina-laco {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.35);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s var(--ease);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 900px) {
+  .theater-curtain { --largura-aberta: 7vw; }
+  .theater-curtain .cortina-esquerda,
+  .theater-curtain .cortina-direita { max-width: 90px; }
+}
+
+@media (max-width: 640px) {
+  .theater-curtain { --largura-aberta: 6vw; }
+  .theater-curtain .cortina-esquerda,
+  .theater-curtain .cortina-direita {
+    min-width: 28px;
+    max-width: 56px;
+  }
+  .theater-curtain .haste-superior { height: 12px; }
+  .theater-curtain .poste-esquerdo,
+  .theater-curtain .poste-direito { width: 7px; }
+  .theater-curtain .cortina-laco {
+    width: 34px;
+    height: 34px;
+  }
+  .theater-curtain .cortina-laco::before {
+    width: 30px;
+    height: 9px;
+  }
+  .theater-curtain .cortina-laco::after {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .theater-curtain { --largura-aberta: 8vw; }
+  .theater-curtain .cortina-esquerda,
+  .theater-curtain .cortina-direita { max-width: 120px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theater-curtain .cortina-esquerda,
+  .theater-curtain .cortina-direita,
+  .theater-curtain .cortina-tecido,
+  .theater-curtain .cortina-laco,
+  .theater-curtain .cortina-aneis {
+    transition: none !important;
+  }
+}

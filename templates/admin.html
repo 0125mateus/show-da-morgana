@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmações — O Show da Morgana{% endblock %}
+
+{% block body %}
+<main class="section">
+  <div class="wrap">
+    <div class="admin-bar">
+      <div>
+        <h1 class="section__title">Painel de confirmações</h1>
+        <p class="section__lead" style="margin-bottom: 0;">
+          {{ evento.titulo }} · {{ data_festa_br }} · prazo até {{ prazo_br }}
+        </p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn--azul" href="{{ url_for('index') }}">Ver site</a>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+          {% for category, message in messages %}
+            <li{% if category == "ok" %} class="flash--ok"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <div class="stats">
+      <div class="stat"><strong>{{ stats.confirmados }}</strong><span>vão à festa</span></div>
+      <div class="stat"><strong>{{ stats.pessoas }}</strong><span>pessoas no total</span></div>
+      <div class="stat"><strong>{{ stats.adultos }}</strong><span>adultos</span></div>
+      <div class="stat"><strong>{{ stats.criancas }}</strong><span>crianças</span></div>
+      <div class="stat"><strong>{{ stats.nao_vao }}</strong><span>não podem ir</span></div>
+    </div>
+
+    <div class="table-wrap">
+      {% if confirmacoes %}
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Status</th>
+            <th>Adultos</th>
+            <th>Crianças</th>
+            <th>Recado</th>
+            <th>Quando</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in confirmacoes %}
+          <tr>
+            <td><strong>{{ c.nome }}</strong></td>
+            <td>
+              {% if c.status == "sim" %}
+                <span class="tag tag--sim">Sim</span>
+              {% else %}
+                <span class="tag tag--nao">Não</span>
+              {% endif %}
+            </td>
+            <td>{{ c.adultos }}</td>
+            <td>{{ c.criancas }}</td>
+            <td>{{ c.mensagem or "—" }}</td>
+            <td>{{ c.criado_em.replace("T", " ") }}</td>
+            <td>
+              <form method="post" action="{{ url_for('admin_excluir', confirmacao_id=c.id) }}" class="form-excluir" onsubmit="return confirm({{ ('Excluir a confirmação de ' ~ c.nome ~ '?')|tojson }});">
+                <button type="submit" class="btn-excluir">Excluir</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p style="padding: 1.5rem; margin: 0;">Nenhuma confirmação ainda. Compartilhe o link da página!</p>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}
