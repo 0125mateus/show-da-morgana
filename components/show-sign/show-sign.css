@@ -24,9 +24,10 @@
   padding-right: max(0.85rem, 4vw);
   box-sizing: border-box;
   background:
-    radial-gradient(ellipse 90% 70% at 50% 120%, rgba(30, 70, 140, 0.35), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 80% 10%, rgba(80, 40, 120, 0.2), transparent 50%),
-    linear-gradient(180deg, #020617 0%, #0a1838 42%, #0c2248 72%, #071225 100%);
+    radial-gradient(ellipse 80% 55% at 15% 20%, rgba(90, 190, 255, 0.55), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 90% 15%, rgba(255, 210, 100, 0.28), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 75% 90%, rgba(50, 210, 170, 0.3), transparent 55%),
+    linear-gradient(180deg, #1c52c4 0%, #2470e0 38%, #1f5bb8 72%, #184a9e 100%);
   position: relative;
   /* Abaixo das cortinas abertas (z-index: 2) para elas emoldurarem a cena */
   z-index: 1;
@@ -88,20 +89,21 @@
 }
 
 .space-bg__nebula--a {
-  width: min(55vw, 420px);
-  height: min(40vw, 300px);
+  width: min(70vw, 420px);
+  height: min(50vw, 300px);
   left: -8%;
-  top: 18%;
-  background: radial-gradient(ellipse, rgba(45, 110, 200, 0.55), transparent 70%);
+  top: 12%;
+  background: radial-gradient(ellipse, rgba(110, 200, 255, 0.7), transparent 70%);
+  opacity: 0.7;
 }
 
 .space-bg__nebula--b {
-  width: min(50vw, 380px);
-  height: min(38vw, 280px);
+  width: min(65vw, 380px);
+  height: min(48vw, 280px);
   right: -10%;
-  bottom: 12%;
-  background: radial-gradient(ellipse, rgba(30, 150, 120, 0.35), transparent 70%);
-  opacity: 0.35;
+  bottom: 10%;
+  background: radial-gradient(ellipse, rgba(60, 220, 180, 0.55), transparent 70%);
+  opacity: 0.55;
 }
 
 .space-bg__planet {
@@ -270,9 +272,24 @@
   position: relative;
   z-index: 10; /* acima das cortinas abertas */
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  flex-wrap: nowrap;
   justify-content: center;
+  align-items: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
   gap: 0.75rem;
+  animation: none; /* evita “torto” do rise-soft no botão */
+}
+
+.show-sign-page__cta .btn {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+  text-align: center;
+  transform: none !important;
 }
 
 .show-sign-page__cta .btn--ghost {
@@ -687,8 +704,15 @@
     line-height: 1.4;
   }
 
+  .show-sign-page__cta {
+    width: 100%;
+    max-width: 280px;
+    align-items: center;
+  }
+
   .show-sign-page__cta .btn {
-    width: min(100%, 280px);
+    width: 100%;
+    max-width: 280px;
     justify-content: center;
     min-height: 48px;
     font-size: 1rem;

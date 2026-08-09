@@ -228,8 +228,20 @@ a:hover {
 .cta-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 0.85rem;
+  width: 100%;
   animation: rise-soft 1s 0.34s var(--ease-out) both;
+}
+
+.hero .cta-row {
+  max-width: 320px;
+}
+
+.hero .cta-row .btn {
+  width: 100%;
+  text-align: center;
 }
 
 .hero__scroll {
@@ -433,9 +445,8 @@ a:hover {
   color: rgba(255, 255, 255, 0.92);
 }
 
-body:has(.video-fullscreen),
-body:has(.show-sign-page) {
-  background: #020617;
+body:has(.video-fullscreen) {
+  background: #123a8a;
 }
 
 body:has(.show-sign-page) {
@@ -1129,15 +1140,22 @@ tbody tr:hover {
 
   .cta-row {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
     gap: 0.65rem;
+    margin-inline: auto;
   }
 
   .cta-row .btn {
-    width: 100%;
+    width: min(100%, 300px);
     justify-content: center;
     min-height: 48px;
     text-align: center;
+  }
+
+  .show-sign-page__cta.cta-row {
+    align-items: center;
+    max-width: 300px;
   }
 
   .section {

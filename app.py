@@ -67,8 +67,8 @@ def web_manifest():
             "scope": "/",
             "display": "standalone",
             "orientation": "portrait",
-            "background_color": "#020617",
-            "theme_color": "#0a1838",
+            "background_color": "#1c52c4",
+            "theme_color": "#1c52c4",
             "lang": "pt-BR",
             "icons": [
                 {

@@ -300,11 +300,11 @@
 }
 
 @media (max-width: 640px) {
-  .theater-curtain { --largura-aberta: 6vw; }
+  .theater-curtain { --largura-aberta: 4.5vw; }
   .theater-curtain .cortina-esquerda,
   .theater-curtain .cortina-direita {
-    min-width: 28px;
-    max-width: 56px;
+    min-width: 22px;
+    max-width: 42px;
   }
   .theater-curtain .haste-superior { height: 12px; }
   .theater-curtain .poste-esquerdo,
