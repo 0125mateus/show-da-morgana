@@ -11,6 +11,7 @@
   aria-pressed="true"
   aria-label="Ativar som"
   title="Ativar som"
+  disabled
 >
   <span class="audio-toggle__icon audio-toggle__icon--muted" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -90,20 +91,36 @@
       setMutedUI(true);
     }
 
-    btn.addEventListener("click", function () {
+    function toggleSom() {
       if (audio.muted || audio.paused) {
         unmute();
       } else {
         mute();
       }
+    }
+
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleSom();
     });
 
     audio.addEventListener("canplay", playMuted, { once: true });
     playMuted();
 
-    window.addEventListener("curtains:open", function () {
+    function liberarBotaoSom() {
+      btn.disabled = false;
+      btn.classList.add("is-ready");
       if (audio.paused) playMuted();
-    });
+    }
+
+    /* Assim que as cortinas começam a abrir, o botão fica no centro e clicável */
+    window.addEventListener("curtains:open", liberarBotaoSom);
+
+    /* Se o evento já passou (reload rápido) ou cortinas já abertas */
+    var cortina = document.getElementById("theaterCurtain");
+    if (cortina && !cortina.classList.contains("curtains-closed")) {
+      liberarBotaoSom();
+    }
   })();
 </script>
 {% endblock %}
