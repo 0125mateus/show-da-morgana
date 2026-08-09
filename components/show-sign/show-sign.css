@@ -77,80 +77,40 @@
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-/* Botão mute / unmute — acima das cortinas; no centro após a abertura */
+/* Botão mute / unmute — canto superior direito, acima das cortinas */
 .audio-toggle {
   position: fixed;
-  top: max(1.5rem, calc(env(safe-area-inset-top) + 1.25rem));
-  left: 50%;
-  right: auto;
+  top: max(1.35rem, calc(env(safe-area-inset-top) + 1rem));
+  right: max(0.85rem, env(safe-area-inset-right));
+  left: auto;
   z-index: 10050;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  min-height: 48px;
-  min-width: 48px;
   justify-content: center;
-  padding: 0.7rem;
+  width: 48px;
+  height: 48px;
+  padding: 0;
   border: 2px solid #ffd700;
-  border-radius: 999px;
+  border-radius: 50%;
   background: #1a0a14;
   color: #ffe566;
-  font-family: "Nunito", "Fredoka", sans-serif;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   appearance: none;
   -webkit-appearance: none;
-  transform: translateX(-50%);
-  opacity: 0;
-  visibility: hidden;
   box-shadow:
     0 4px 18px rgba(0, 0, 0, 0.55),
     0 0 0 3px rgba(255, 215, 0, 0.25),
     0 0 22px rgba(255, 180, 0, 0.45);
-  transition:
-    opacity 0.35s ease,
-    visibility 0.35s ease,
-    transform 0.25s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-/* Liberado quando as cortinas abrem — clicável no vão do palco */
-.audio-toggle.is-ready {
-  opacity: 1;
-  visibility: visible;
-  animation: audio-toggle-pulse 1.6s ease-in-out 2;
-}
-
-@keyframes audio-toggle-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 4px 18px rgba(0, 0, 0, 0.55),
-      0 0 0 3px rgba(255, 215, 0, 0.25),
-      0 0 22px rgba(255, 180, 0, 0.45);
-  }
-  50% {
-    box-shadow:
-      0 6px 22px rgba(0, 0, 0, 0.55),
-      0 0 0 5px rgba(255, 215, 0, 0.45),
-      0 0 32px rgba(255, 200, 0, 0.7);
-  }
-}
-
-.audio-toggle.is-ready:hover,
-.audio-toggle.is-ready:active {
-  transform: translateX(-50%) translateY(-1px);
+.audio-toggle:hover,
+.audio-toggle:active {
+  transform: scale(1.06);
   background: #2a1020;
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.55),
-    0 0 0 3px rgba(255, 215, 0, 0.35),
-    0 0 28px rgba(255, 200, 0, 0.55);
 }
 
 .audio-toggle:focus-visible {
@@ -161,7 +121,7 @@
 .audio-toggle__icon {
   display: none;
   line-height: 0;
-  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .audio-toggle.is-muted .audio-toggle__icon--muted,

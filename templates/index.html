@@ -3,7 +3,14 @@
 {% block title %}O Show da Morgana{% endblock %}
 
 {% block body %}
-{# Fora do .show-sign-page para ficar acima das cortinas (stacking context) #}
+<audio
+  id="musica-festa"
+  src="{{ url_for('static', filename='audio/eu-quero-saber.mp3') }}"
+  loop
+  preload="auto"
+  playsinline
+></audio>
+
 <button
   type="button"
   class="audio-toggle is-muted"
@@ -11,7 +18,6 @@
   aria-pressed="true"
   aria-label="Ativar som"
   title="Ativar som"
-  disabled
 >
   <span class="audio-toggle__icon audio-toggle__icon--muted" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -30,14 +36,6 @@
 </button>
 
 <main class="show-sign-page" id="inicio" aria-label="Letreiro do Show da Morgana">
-  <audio
-    id="musica-festa"
-    src="{{ url_for('static', filename='audio/eu-quero-saber.mp3') }}"
-    loop
-    preload="auto"
-    playsinline
-  ></audio>
-
   {% include "components/show-sign.html" %}
 
   <p class="show-sign-page__lead">
@@ -56,70 +54,66 @@
     var btn = document.getElementById("audioToggle");
     if (!audio || !btn) return;
 
-    var volumeAlvo = 0.65;
+    var volumeAlvo = 0.7;
+    var somLigado = false;
 
-    function setMutedUI(muted) {
-      btn.classList.toggle("is-muted", muted);
-      btn.setAttribute("aria-pressed", muted ? "true" : "false");
-      btn.setAttribute("aria-label", muted ? "Ativar som" : "Silenciar");
-      btn.title = muted ? "Ativar som" : "Silenciar";
+    function atualizarBotao() {
+      btn.classList.toggle("is-muted", !somLigado);
+      btn.setAttribute("aria-pressed", somLigado ? "false" : "true");
+      btn.setAttribute("aria-label", somLigado ? "Silenciar" : "Ativar som");
+      btn.title = somLigado ? "Silenciar" : "Ativar som";
     }
 
-    async function playMuted() {
+    function tentarTocarMudo() {
       audio.muted = true;
       audio.volume = volumeAlvo;
-      try {
-        await audio.play();
-      } catch (_) {}
-      setMutedUI(true);
+      var p = audio.play();
+      if (p && p.catch) p.catch(function () {});
     }
 
-    async function unmute() {
+    function ligarSom() {
       audio.muted = false;
       audio.volume = volumeAlvo;
-      try {
-        await audio.play();
-        setMutedUI(false);
-      } catch (_) {
-        setMutedUI(true);
-      }
-    }
-
-    async function mute() {
-      audio.muted = true;
-      setMutedUI(true);
-    }
-
-    function toggleSom() {
-      if (audio.muted || audio.paused) {
-        unmute();
+      var p = audio.play();
+      if (p && p.then) {
+        p.then(function () {
+          somLigado = true;
+          atualizarBotao();
+        }).catch(function () {
+          somLigado = false;
+          atualizarBotao();
+        });
       } else {
-        mute();
+        somLigado = !audio.muted;
+        atualizarBotao();
       }
     }
 
-    btn.addEventListener("click", function (e) {
+    function desligarSom() {
+      audio.muted = true;
+      somLigado = false;
+      atualizarBotao();
+    }
+
+    function aoClicarSom(e) {
+      e.preventDefault();
       e.stopPropagation();
-      toggleSom();
+      if (somLigado) {
+        desligarSom();
+      } else {
+        ligarSom();
+      }
+    }
+
+    btn.addEventListener("click", aoClicarSom);
+
+    audio.addEventListener("canplay", tentarTocarMudo, { once: true });
+    tentarTocarMudo();
+    atualizarBotao();
+
+    window.addEventListener("curtains:open", function () {
+      if (audio.paused) tentarTocarMudo();
     });
-
-    audio.addEventListener("canplay", playMuted, { once: true });
-    playMuted();
-
-    function liberarBotaoSom() {
-      btn.disabled = false;
-      btn.classList.add("is-ready");
-      if (audio.paused) playMuted();
-    }
-
-    /* Assim que as cortinas começam a abrir, o botão fica no centro e clicável */
-    window.addEventListener("curtains:open", liberarBotaoSom);
-
-    /* Se o evento já passou (reload rápido) ou cortinas já abertas */
-    var cortina = document.getElementById("theaterCurtain");
-    if (cortina && !cortina.classList.contains("curtains-closed")) {
-      liberarBotaoSom();
-    }
   })();
 </script>
 {% endblock %}
