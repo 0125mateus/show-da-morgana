@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{% block title %}O Show da Morgana{% endblock %}</title>
   <meta name="description" content="Confirme presença no aniversário da Morgana — O Show da Morgana, 19 de setembro.">
+  <meta name="color-scheme" content="light only">
   <meta name="theme-color" content="#1c52c4">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Show da Morgana">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="manifest" href="{{ url_for('web_manifest') }}">
@@ -19,7 +20,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/invite-app.css') }}">
   <link rel="stylesheet" href="{{ url_for('theater_curtain_asset', filename='theater-curtain.css') }}">
   <link rel="stylesheet" href="{{ url_for('show_sign_asset', filename='show-sign.css') }}">
-</head>
+  <style>
+    /* Força tema claro — evita “escurecer” do dark mode do celular */
+    html { color-scheme: light only; }
+  </style>
 <body class="invite-app-body {% block body_class %}{% endblock %}">
   <div class="page-light-flash" id="pageLightFlash" aria-hidden="true"></div>
   {% include "components/theater-curtain.html" %}

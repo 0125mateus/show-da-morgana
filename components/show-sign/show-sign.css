@@ -554,9 +554,11 @@
 
 .show-sign__line--hero {
   font-size: clamp(2.2rem, 9.5vw, 4.8rem);
-  color: #fff7f0;
+  color: #fff7f0 !important;
+  -webkit-text-fill-color: #fff7f0 !important;
   -webkit-text-stroke: 1.5px #fff3c4;
   paint-order: stroke fill;
+  forced-color-adjust: none;
   text-shadow:
     0 2px 0 #c40018,
     0 4px 0 #8a0010,
