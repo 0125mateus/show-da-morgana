@@ -122,6 +122,23 @@ a:hover {
   z-index: 0;
 }
 
+/* Hero sem a foto informativa por trás — fundo claro do show */
+.hero__bg--clean {
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 20%, rgba(90, 180, 255, 0.45), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 85% 15%, rgba(255, 200, 90, 0.28), transparent 50%),
+    radial-gradient(ellipse 55% 40% at 70% 90%, rgba(47, 158, 91, 0.25), transparent 55%),
+    linear-gradient(180deg, #1c52c4 0%, #2470e0 42%, #1a4db8 100%);
+  animation: none;
+  transform: none;
+}
+
+.hero--clean .hero__veil {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(245, 197, 24, 0.2), transparent 60%),
+    linear-gradient(180deg, transparent 40%, rgba(10, 30, 80, 0.25) 100%);
+}
+
 .hero__veil {
   position: absolute;
   inset: 0;
@@ -597,6 +614,26 @@ body:has(.show-sign-page)::before {
 
 .mission__art:hover img {
   transform: scale(1.03);
+}
+
+/* Informativo (frente do convite) abaixo da ficha */
+.section--informativo {
+  background: rgba(255, 252, 246, 0.72);
+}
+
+.informativo-card {
+  margin: 0;
+  border-radius: calc(var(--raio) + 0.15rem);
+  overflow: hidden;
+  box-shadow: var(--sombra-forte);
+  border: 2px solid rgba(27, 63, 122, 0.1);
+  background: #fff;
+}
+
+.informativo-card img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* ----- Form ----- */

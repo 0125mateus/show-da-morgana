@@ -3,8 +3,8 @@
 {% block title %}Confirmar presença — O Show da Morgana{% endblock %}
 
 {% block body %}
-<header class="hero" id="convite">
-  <div class="hero__bg" aria-hidden="true"></div>
+<header class="hero hero--clean" id="convite">
+  <div class="hero__bg hero__bg--clean" aria-hidden="true"></div>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__sparkles" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span><span></span>
@@ -50,8 +50,22 @@
       </div>
     </div>
     <div class="mission__art reveal reveal-delay-2">
-      <img src="{{ url_for('static', filename='img/convite-verso.png') }}" alt="Verso do convite do Show da Morgana">
+      <img src="{{ url_for('static', filename='img/convite-verso.png') }}" alt="Ficha de curiosidades do Show da Morgana">
     </div>
+  </div>
+</section>
+
+<section class="section section--informativo" id="informativo">
+  <div class="wrap">
+    <h2 class="section__title reveal">Informativo do convite</h2>
+    <p class="section__lead reveal">Sugestões de presentes, tamanhos e tudo o que a família precisa saber.</p>
+    <figure class="informativo-card reveal reveal-delay-1">
+      <img
+        src="{{ url_for('static', filename='img/convite-frente.png') }}"
+        alt="Informativo do convite — sugestões de presentes e detalhes da festa"
+        loading="lazy"
+      >
+    </figure>
   </div>
 </section>
 
