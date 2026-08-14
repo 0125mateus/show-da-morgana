@@ -139,6 +139,102 @@ a:hover {
     linear-gradient(180deg, transparent 40%, rgba(10, 30, 80, 0.25) 100%);
 }
 
+/* ----- Hero palco (arte com círculo laranja) ----- */
+.hero--palco {
+  min-height: auto;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  background: #0a1e4a;
+}
+
+.hero__stage {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.hero__stage-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Texto dentro do círculo laranja */
+.hero__oval-title {
+  position: absolute;
+  left: 50%;
+  top: 18.5%;
+  transform: translateX(-50%);
+  width: min(58%, 320px);
+  margin: 0;
+  text-align: center;
+  z-index: 2;
+  font-family: "Luckiest Guy", "Fredoka", "Arial Black", sans-serif;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  forced-color-adjust: none;
+  text-shadow:
+    0 2px 0 #b33a00,
+    0 4px 0 #8a2a00,
+    0 0 12px rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+
+.hero__oval-line {
+  display: block;
+  font-size: clamp(0.85rem, 4.2vw, 1.45rem);
+  font-weight: 700;
+  margin-bottom: 0.12em;
+  color: #fffef5;
+  -webkit-text-fill-color: #fffef5;
+}
+
+.hero__oval-name {
+  display: block;
+  font-size: clamp(1.55rem, 8.5vw, 2.85rem);
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  text-shadow:
+    0 2px 0 #c44500,
+    0 4px 0 #8a2a00,
+    0 0 16px rgba(255, 255, 255, 0.7),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.hero__content--palco {
+  position: relative;
+  z-index: 3;
+  padding: 1.25rem 0 1.75rem;
+  background: linear-gradient(180deg, #0a1e4a 0%, #123a8a 55%, #1a4db8 100%);
+  text-align: center;
+}
+
+.hero__content--palco .hero__lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero__content--palco .cta-row {
+  justify-content: center;
+  margin-inline: auto;
+}
+
+@media (max-width: 560px) {
+  .hero__oval-title {
+    top: 17.5%;
+    width: min(62%, 260px);
+  }
+
+  .hero__content--palco {
+    padding: 1rem 0 1.5rem;
+  }
+}
+
 .hero__veil {
   position: absolute;
   inset: 0;

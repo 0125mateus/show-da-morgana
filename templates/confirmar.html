@@ -3,15 +3,21 @@
 {% block title %}Confirmar presença — O Show da Morgana{% endblock %}
 
 {% block body %}
-<header class="hero hero--clean" id="convite">
-  <div class="hero__bg hero__bg--clean" aria-hidden="true"></div>
-  <div class="hero__veil" aria-hidden="true"></div>
-  <div class="hero__sparkles" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span><span></span>
+<header class="hero hero--palco" id="convite">
+  <div class="hero__stage" aria-hidden="false">
+    <img
+      class="hero__stage-img"
+      src="{{ url_for('static', filename='img/hero-palco.png') }}"
+      alt="Palco do Show da Morgana com Luna, Júpiter e Cláudio"
+    >
+    <h1 class="hero__oval-title">
+      <span class="hero__oval-line">O SHOW DA</span>
+      <span class="hero__oval-name">MORGANA</span>
+    </h1>
   </div>
-  <div class="wrap hero__content">
+
+  <div class="wrap hero__content hero__content--palco">
     <p class="hero__eyebrow">Convite especial · {{ evento.idade }} anos</p>
-    <h1 class="brand">O Show da <span>Morgana</span></h1>
     <p class="hero__lead">
       Missão especial de {{ evento.idade }} anos: descobrir juntos como a diversão
       fica ainda maior com você na festa!
@@ -21,7 +27,6 @@
       <a class="btn btn--ghost" href="#missao">Ver a missão</a>
     </div>
   </div>
-  <div class="hero__scroll" aria-hidden="true"><i></i> Deslize</div>
 </header>
 
 <section class="section" id="missao">
